@@ -6,8 +6,8 @@ import { validate } from './env.validate';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      validate
-    })
+      validate,
+    }),
   ],
   controllers: [],
   providers: [],
