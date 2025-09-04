@@ -1,5 +1,4 @@
-import { Email } from "@/core/domain/users/common/objectValues/Email";
-
+import { Email } from '@/core/domain/users/common/objectValues/Email';
 
 describe('Email Value Object', () => {
   it('should create an Email object for a valid email', () => {
