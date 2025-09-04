@@ -55,4 +55,8 @@ export class UserCommon extends Entity<UserCommonProps> {
   public updateEmail(email: Email): void {
     this.attributes.email = email;
   }
+
+  public updatePassword(password: string): void {
+    this.attributes.password = password;
+  }
 }
