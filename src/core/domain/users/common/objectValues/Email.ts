@@ -1,5 +1,4 @@
-import { Either, left, right } from "@/shared/utils/either";
-
+import { Either, left, right } from '@/shared/utils/either';
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
