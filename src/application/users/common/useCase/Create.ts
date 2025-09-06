@@ -10,9 +10,9 @@ type RequestCreateUser = {
   cpf: string;
   email: string;
   password: string;
-  saldo: number;
+  saldo?: number;
   common: boolean;
-  createdAt: Date;
+  createdAt?: Date;
 };
 
 type ResponseCreateUser = Either<BadRequestException, UserCommon>;

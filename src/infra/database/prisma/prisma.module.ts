@@ -7,10 +7,10 @@ import { UserCommonRepository } from '../repository/userCommon.repository';
   providers: [
     PrismaService,
     {
-      provide:UserCommonGateway,
-      useClass:UserCommonRepository
-    }
+      provide: UserCommonGateway,
+      useClass: UserCommonRepository,
+    },
   ],
-  exports: [PrismaService],
+  exports: [PrismaService,UserCommonGateway],
 })
 export class PrismaModule {}

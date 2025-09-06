@@ -9,7 +9,7 @@ type CreateUserDto = {
   cpf: string;
   email: string;
   password: string;
-  saldo: number;
+  saldo?: number;
   common: boolean;
   createdAt?: Date;
 };
@@ -23,8 +23,9 @@ export class UserCommonFactory {
     if (!cpf) return left(new BadRequestException('CPF is required.'));
     if (!password)
       return left(new BadRequestException('Password is required.'));
-    if (!saldo) return left(new BadRequestException('Saldo is required.'));
-    if (saldo < 0) return left(new BadRequestException('Value is invalid.'));
+    if (saldo) {
+      if (saldo < 0) return left(new BadRequestException('Value is invalid.'));
+    }
 
     const emailValid = Email.create(email);
     if (emailValid.isLeft())
@@ -38,7 +39,7 @@ export class UserCommonFactory {
       cpf: cpfValid.value,
       email: emailValid.value,
       password,
-      saldo,
+      saldo: saldo ?? 0,
       common: true,
       createdAt: createdAt ?? new Date(),
     });
