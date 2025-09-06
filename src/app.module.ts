@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { validate } from './env.validate';
 import { ServiceModule } from './infra/services/service.module';
+import { HttpModule } from './infra/http/http.module';
 
 @Module({
   imports: [
@@ -9,8 +10,9 @@ import { ServiceModule } from './infra/services/service.module';
       isGlobal: true,
       validate,
     }),
+    HttpModule
   ],
   controllers: [],
-  providers: [ServiceModule],
+  providers: [],
 })
 export class AppModule {}
