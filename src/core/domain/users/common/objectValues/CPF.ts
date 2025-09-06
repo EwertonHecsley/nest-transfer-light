@@ -19,9 +19,10 @@ export class CPF {
     return right(new CPF(value));
   }
 
-  private static validate(email: string): boolean {
-    const cpfRegex = /^\d{3}\.\d{3}\.\d{3}\-\d{2}$/;
-    return cpfRegex.test(email);
+  private static validate(cpf: string): boolean {
+    const cleanedCpf = cpf.replace(/\D/g, '');
+    const cpfRegex = /^\d{11}$/;
+    return cpfRegex.test(cleanedCpf);
   }
 
   get toValue(): string {

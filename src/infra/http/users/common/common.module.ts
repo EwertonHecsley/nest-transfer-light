@@ -7,7 +7,7 @@ import { CreateUserCommonController } from './controller/create.controller';
 import { ServiceModule } from '@/infra/services/service.module';
 
 @Module({
-  imports: [DatabaseModule,ServiceModule],
+  imports: [DatabaseModule, ServiceModule],
   providers: [
     {
       provide: CreateUserCommonUseCase,
