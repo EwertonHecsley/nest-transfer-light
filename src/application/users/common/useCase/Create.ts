@@ -10,6 +10,7 @@ type RequestCreateUser = {
   cpf: string;
   email: string;
   password: string;
+  saldo:number;
   common: boolean;
   createdAt: Date;
 };
