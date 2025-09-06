@@ -1,0 +1,13 @@
+@baseUrl = http://localhost:3000
+
+###
+POST {{baseUrl}}/api/v1/common
+Content-Type: application/json
+
+{
+    "fullName":"Bernardo Hecsley",
+    "email":"bernardo@email.com",
+    "cpf":"123.456.789-10",
+    "password":"123456",
+    "common":true
+}

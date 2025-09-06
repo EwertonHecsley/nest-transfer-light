@@ -12,7 +12,7 @@ model UserCommon{
   id        String    @id @default(uuid())
   fullName  String    @db.VarChar(255)
   email     String    @unique @db.VarChar(255)
-  password  String    @db.VarChar(10)
+  password  String    @db.VarChar(255)
   cpf       String    @unique @db.VarChar(14)
   saldo     Float     @default(0)
   common    Boolean   @default(true)

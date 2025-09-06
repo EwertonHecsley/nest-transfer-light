@@ -1,11 +1,4 @@
-import {
-  IsBoolean,
-  IsEmail,
-  IsNotEmpty,
-  IsString,
-  Max,
-  Min,
-} from 'class-validator';
+import { IsBoolean, IsEmail, IsNotEmpty, IsString } from 'class-validator';
 
 export class CreateUserCommonDto {
   @IsString()
@@ -23,8 +16,6 @@ export class CreateUserCommonDto {
 
   @IsString()
   @IsNotEmpty({ message: 'Password is required.' })
-  @Min(4, { message: 'Min 4 characteres' })
-  @Max(6, { message: 'Max 6 characteres.' })
   password: string;
 
   @IsBoolean()

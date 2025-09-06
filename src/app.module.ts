@@ -10,7 +10,7 @@ import { HttpModule } from './infra/http/http.module';
       isGlobal: true,
       validate,
     }),
-    HttpModule
+    HttpModule,
   ],
   controllers: [],
   providers: [],

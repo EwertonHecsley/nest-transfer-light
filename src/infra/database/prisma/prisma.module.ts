@@ -11,6 +11,6 @@ import { UserCommonRepository } from '../repository/userCommon.repository';
       useClass: UserCommonRepository,
     },
   ],
-  exports: [PrismaService,UserCommonGateway],
+  exports: [PrismaService, UserCommonGateway],
 })
 export class PrismaModule {}
