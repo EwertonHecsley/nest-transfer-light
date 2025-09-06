@@ -8,7 +8,7 @@ type UserCommonProps = {
   cpf: CPF;
   email: Email;
   password: string;
-  saldo:number;
+  saldo: number;
   common: boolean;
   createdAt: Date;
 };
@@ -20,7 +20,7 @@ export class UserCommon extends Entity<UserCommonProps> {
 
   public static create(attributes: UserCommonProps, id?: Identity): UserCommon {
     return new UserCommon(
-      { ...attributes, saldo:0,createdAt: attributes.createdAt },
+      { ...attributes, saldo: 0, createdAt: attributes.createdAt },
       id,
     );
   }
@@ -41,7 +41,7 @@ export class UserCommon extends Entity<UserCommonProps> {
     return this.attributes.password;
   }
 
-  get saldo():number{
+  get saldo(): number {
     return this.attributes.saldo;
   }
 
@@ -65,7 +65,7 @@ export class UserCommon extends Entity<UserCommonProps> {
     this.attributes.password = password;
   }
 
-  public updateSaldo(value:number):void{
+  public updateSaldo(value: number): void {
     this.attributes.saldo = value;
   }
 }
