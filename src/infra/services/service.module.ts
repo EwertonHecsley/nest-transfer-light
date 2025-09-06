@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { HashService } from "./HashService";
+import { HashService } from "./hash .service";
 import { EncryptionGateway } from "@/core/domain/users/common/gateway/EncryptonGateway";
 
 @Module({
