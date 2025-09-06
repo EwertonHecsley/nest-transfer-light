@@ -1,0 +1,20 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model UserCommon{
+  id String @id @default(uuid())
+  fullName String @db.VarChar(255)
+  email String @unique @db.VarChar(255)
+  saldo Float @default(0)
+  common Boolean @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("user_common")
+}
