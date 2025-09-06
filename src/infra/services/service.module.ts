@@ -1,14 +1,14 @@
-import { Module } from "@nestjs/common";
-import { HashService } from "./HashService";
-import { EncryptionGateway } from "@/core/domain/users/common/gateway/EncryptonGateway";
+import { Module } from '@nestjs/common';
+import { HashService } from './hash .service';
+import { EncryptionGateway } from '@/core/domain/users/common/gateway/EncryptonGateway';
 
 @Module({
-    providers:[
-        {
-            provide:EncryptionGateway,
-            useClass:HashService
-        }
-    ],
-    exports:[EncryptionGateway]
+  providers: [
+    {
+      provide: EncryptionGateway,
+      useClass: HashService,
+    },
+  ],
+  exports: [EncryptionGateway],
 })
-export class ServiceModule{}
+export class ServiceModule {}

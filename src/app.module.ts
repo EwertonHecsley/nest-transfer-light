@@ -11,8 +11,6 @@ import { ServiceModule } from './infra/services/service.module';
     }),
   ],
   controllers: [],
-  providers: [
-    ServiceModule
-  ],
+  providers: [ServiceModule],
 })
 export class AppModule {}
