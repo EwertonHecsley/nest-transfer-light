@@ -17,5 +17,5 @@ export abstract class UserCommonGateway {
   abstract findByEmail(email: string): Promise<UserCommon | null>;
   abstract findByCpf(cpf: string): Promise<UserCommon | null>;
   abstract findById(id: string): Promise<UserCommon | null>;
-  abstract list(params:FindAllParams): Promise<PaginatedResponse<UserCommon>>;
+  abstract list(params: FindAllParams): Promise<PaginatedResponse<UserCommon>>;
 }

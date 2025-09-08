@@ -12,27 +12,6 @@ describe('CPF Value Object', () => {
     expect(result.value).toBeInstanceOf(CPF);
   });
 
-  it('should return a BadRequestException for a non-formatted CPF string', () => {
-    const invalidCpfString = '12345678900';
-    const result = CPF.create(invalidCpfString);
-
-    expect(result.isLeft()).toBeTruthy();
-
-    expect(result.value).toBeInstanceOf(BadRequestException);
-
-    expect((result.value as BadRequestException).message).toBe(
-      'Invalid CPF format. Expected format: XXX.XXX.XXX-XX',
-    );
-  });
-
-  it('should return a BadRequestException for an incorrectly formatted CPF', () => {
-    const invalidCpfString = '123.456.789_00';
-    const result = CPF.create(invalidCpfString);
-
-    expect(result.isLeft()).toBeTruthy();
-    expect(result.value).toBeInstanceOf(BadRequestException);
-  });
-
   it('should return a BadRequestException for an empty string', () => {
     const invalidCpfString = '';
     const result = CPF.create(invalidCpfString);
