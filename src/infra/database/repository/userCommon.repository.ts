@@ -1,4 +1,8 @@
-import { UserCommonGateway } from '@/core/domain/users/common/gateway/UserCommonGateway';
+import {
+  FindAllParams,
+  PaginatedResponse,
+  UserCommonGateway,
+} from '@/core/domain/users/common/gateway/UserCommonGateway';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserCommon } from '@/core/domain/users/common/entity/UserCommon';
@@ -35,5 +39,22 @@ export class UserCommonRepository implements UserCommonGateway {
       where: { id },
     });
     return userCommon ? UserCommonMaper.toDomain(userCommon) : null;
+  }
+
+  async list(params: FindAllParams): Promise<PaginatedResponse<UserCommon>> {
+    const { page, limit } = params;
+    const total = await this.prismaService.userCommon.count();
+    const userCommons = await this.prismaService.userCommon.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      orderBy: { createdAt: 'desc' },
+    });
+    const data = userCommons.map(UserCommonMaper.toDomain);
+    return {
+      data,
+      total,
+      page,
+      limit,
+    };
   }
 }

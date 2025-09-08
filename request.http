@@ -11,3 +11,7 @@ Content-Type: application/json
     "password":"123456",
     "common":true
 }
+
+###
+GET {{baseUrl}}/api/v1/common
+Content-Type: application/json
