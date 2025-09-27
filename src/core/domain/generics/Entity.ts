@@ -1,4 +1,4 @@
-import Identity from "./Identity";
+import Identity from './Identity';
 
 export default class Entity<T> {
   private readonly _identity: Identity;
