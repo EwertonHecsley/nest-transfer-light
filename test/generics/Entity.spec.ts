@@ -1,6 +1,5 @@
-import Entity from "../../src/core/domain/generics/Entity";
-import Identity from "../../src/core/domain/generics/Identity";
-
+import Entity from '../../src/core/domain/generics/Entity';
+import Identity from '../../src/core/domain/generics/Identity';
 
 jest.mock('../../src/core/domain/generics/Identity');
 
@@ -16,11 +15,10 @@ describe('Entity', () => {
   beforeEach(() => {
     attributes = {
       name: 'Test',
-      value: 123
+      value: 123,
     };
   });
 
-  
   it('should be defined', () => {
     const entity = new TestEntity(attributes);
     expect(entity).toBeDefined();
