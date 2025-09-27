@@ -1,4 +1,4 @@
-import { Either, left, right } from '@/shared/utils/either';
+import { Either, left, right } from '../../../../shared/utils/either';
 import { BadRequestException } from '@nestjs/common';
 
 export class CPF {
@@ -9,10 +9,11 @@ export class CPF {
   }
 
   public static create(cpf: string): Either<BadRequestException, CPF> {
+    const cleanedCpf = cpf.replace(/\D/g, '');
     const isValid = this.validate(cpf);
     if (!isValid) return left(new BadRequestException('Invalid CPF format'));
 
-    return right(new CPF(cpf));
+    return right(new CPF(cleanedCpf));
   }
 
   private static validate(cpf: string): boolean {
