@@ -2,7 +2,7 @@ name: CI
 
 on:
   pull_request:
-    branches: [development] 
+    branches: [development]  
   push:
     branches: [main]          
 
@@ -10,11 +10,18 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
 
-    if: github.event_name == 'pull_request' || github.ref_name == 'main'
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Ensure push comes from development branch
+        if: github.event_name == 'push'
+        run: |
+          # Verifica branch de origem do merge
+          if [ "${{ github.event.head_commit.message }}" != *"Merge branch 'development'"* ]; then
+            echo "Push para main só permitido a partir da branch development."
+            exit 1
+          fi
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
