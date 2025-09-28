@@ -1,7 +1,7 @@
-import Entity from '../../src/core/domain/generics/Entity';
-import Identity from '../../src/core/domain/generics/Identity';
+import Entity from '../../../src/core/domain/generics/Entity';
+import Identity from '../../../src/core/domain/generics/Identity';
 
-jest.mock('../../src/core/domain/generics/Identity');
+jest.mock('../../../src/core/domain/generics/Identity');
 
 class TestEntity extends Entity<{}> {
   constructor(attributes: any, id?: Identity) {

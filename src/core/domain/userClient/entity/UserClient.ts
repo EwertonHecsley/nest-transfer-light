@@ -1,10 +1,10 @@
-import { Either, left, right } from '@/shared/utils/either';
+import { Either, left, right } from '../../../../shared/utils/either';
 import Entity from '../../generics/Entity';
 import Identity from '../../generics/Identity';
 import { Balance } from '../objectValues/Balance';
 import { CPF } from '../objectValues/CPF';
 import { Email } from '../objectValues/Email';
-import { InvalidBalanceException } from '@/shared/exceptions/InvalidBalanceException';
+import { InvalidBalanceException } from '../../../../shared/exceptions/InvalidBalanceException';
 
 type UserClientProps = {
   fullName: string;
@@ -25,8 +25,13 @@ export class UserClient extends Entity<UserClientProps> {
   }
 
   addFunds(amount: number): Either<InvalidBalanceException, UserClient> {
+    if (amount <= 0) {
+      return left(new InvalidBalanceException('Amount must be positive.'));
+    }
+
     const newBalanceOrError = this.balance.add(amount);
     if (newBalanceOrError.isLeft()) return left(newBalanceOrError.value);
+
     this._attibutes.balance = newBalanceOrError.value;
     return right(this);
   }
