@@ -1,4 +1,4 @@
-import Identity from '../../src/core/domain/generics/Identity';
+import Identity from '../../../src/core/domain/generics/Identity';
 import { randomUUID, UUID } from 'node:crypto';
 
 describe('Identity', () => {

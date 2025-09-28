@@ -1,4 +1,4 @@
-import { Email } from '../../src/core/domain/userClient/objectValues/Email';
+import { Email } from '../../../src/core/domain/userClient/objectValues/Email';
 
 describe('Email Value Object', () => {
   // Testes de criação (casos de sucesso)

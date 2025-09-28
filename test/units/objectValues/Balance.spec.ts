@@ -1,5 +1,5 @@
-import { Balance } from '../../src/core/domain/userClient/objectValues/Balance';
-import { InvalidBalanceException } from '../../src/shared/exceptions/InvalidBalanceException';
+import { Balance } from '../../../src/core/domain/userClient/objectValues/Balance';
+import { InvalidBalanceException } from '../../../src/shared/exceptions/InvalidBalanceException';
 
 describe('Balance Value Object', () => {
   // --- Testes de Criação (Success) ---
