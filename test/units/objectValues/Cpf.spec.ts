@@ -1,4 +1,4 @@
-import { CPF } from '../../src/core/domain/userClient/objectValues/CPF';
+import { CPF } from '../../../src/core/domain/userClient/objectValues/CPF';
 import { BadRequestException } from '@nestjs/common';
 
 describe('CPF Value Object', () => {
