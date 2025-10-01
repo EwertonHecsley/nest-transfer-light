@@ -1,11 +1,11 @@
-import { UserClient } from '@/core/domain/userClient/entity/UserClient';
-import { Balance } from '@/core/domain/userClient/objectValues/Balance';
-import { CPF } from '@/core/domain/userClient/objectValues/CPF';
-import { Email } from '@/core/domain/userClient/objectValues/Email';
-import { InvalidBalanceException } from '@/shared/exceptions/InvalidBalanceException';
-import { InvalidCpfException } from '@/shared/exceptions/InvalidCpfException';
-import { InvalidEmailException } from '@/shared/exceptions/InvalidEmailException';
-import { Either, left, right } from '@/shared/utils/either';
+import { UserClient } from '../../../../core/domain/userClient/entity/UserClient';
+import { Balance } from '../../../../core/domain/userClient/objectValues/Balance';
+import { CPF } from '../../../../core/domain/userClient/objectValues/CPF';
+import { Email } from '../../../../core/domain/userClient/objectValues/Email';
+import { InvalidBalanceException } from '../../../../shared/exceptions/InvalidBalanceException';
+import { InvalidCpfException } from '../../../../shared/exceptions/InvalidCpfException';
+import { InvalidEmailException } from '../../../../shared/exceptions/InvalidEmailException';
+import { Either, left, right } from '../../../../shared/utils/either';
 
 type UserClientRequest = {
   fullName: string;

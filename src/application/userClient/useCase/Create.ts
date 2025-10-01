@@ -1,11 +1,11 @@
-import { UserClientGateway } from '@/core/domain/ports/UserClientGateway';
-import { UserClient } from '@/core/domain/userClient/entity/UserClient';
-import { Either, left, right } from '@/shared/utils/either';
 import { BadRequestException } from '@nestjs/common';
+import { UserClientGateway } from '../../../../src/core/domain/ports/UserClientGateway';
+import { UserClient } from '../../../../src/core/domain/userClient/entity/UserClient';
+import { InvalidBalanceException } from '../../../../src/shared/exceptions/InvalidBalanceException';
+import { InvalidCpfException } from '../../../../src/shared/exceptions/InvalidCpfException';
+import { InvalidEmailException } from '../../../../src/shared/exceptions/InvalidEmailException';
+import { Either, left, right } from '../../../../src/shared/utils/either';
 import { UserClientFactory } from './factory/CreateUserClient.factory';
-import { InvalidEmailException } from '@/shared/exceptions/InvalidEmailException';
-import { InvalidBalanceException } from '@/shared/exceptions/InvalidBalanceException';
-import { InvalidCpfException } from '@/shared/exceptions/InvalidCpfException';
 
 type UserClientRequest = {
   fullName: string;
@@ -41,8 +41,6 @@ export class CreateUserClientUseCase {
     if (createUserOrError.isLeft()) return left(createUserOrError.value);
 
     const user = createUserOrError.value;
-
-    await this.userClientGateway.create(user);
 
     return right(user);
   }
