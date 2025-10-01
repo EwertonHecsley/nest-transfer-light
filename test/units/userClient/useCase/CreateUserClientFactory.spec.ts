@@ -3,7 +3,7 @@ import { InvalidEmailException } from '../../../../src/shared/exceptions/Invalid
 import { InvalidCpfException } from '../../../../src/shared/exceptions/InvalidCpfException';
 import { InvalidBalanceException } from '../../../../src/shared/exceptions/InvalidBalanceException';
 
-// Mock das dependências
+
 jest.mock('../../../../src/core/domain/userClient/objectValues/Email', () => ({
   Email: { create: jest.fn() },
 }));
