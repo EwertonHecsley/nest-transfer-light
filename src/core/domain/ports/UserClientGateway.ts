@@ -16,5 +16,7 @@ export abstract class UserClientGateway {
   abstract findByCpf(cpf: string): Promise<UserClient | null>;
   abstract findByEmail(email: string): Promise<UserClient | null>;
   abstract findById(id: string): Promise<UserClient | null>;
-  abstract listAll(params:FindAllParams):Promise<PaginatedResponse<UserClient>>;
+  abstract listAll(
+    params: FindAllParams,
+  ): Promise<PaginatedResponse<UserClient>>;
 }
