@@ -5,6 +5,10 @@ import { Balance } from '../objectValues/Balance';
 import { CPF } from '../objectValues/CPF';
 import { Email } from '../objectValues/Email';
 import { InvalidBalanceException } from '../../../../shared/exceptions/InvalidBalanceException';
+import { InvalidFullNameException } from '../../../../shared/exceptions/InvalidFullNameException';
+import { InvalidEmailException } from '../../../../shared/exceptions/InvalidEmailException';
+import { InvalidCpfException } from '../../../../shared/exceptions/InvalidCpfException';
+import { InvalidPasswordException } from '../../../../shared/exceptions/InvalidPasswordException';
 
 type UserClientProps = {
   fullName: string;
@@ -79,5 +83,39 @@ export class UserClient extends Entity<UserClientProps> {
 
   get createdAt(): Date {
     return this._attibutes.createdAt;
+  }
+
+  public changeFullName(
+    newFullName: string,
+  ): Either<InvalidFullNameException, UserClient> {
+    if (!newFullName || newFullName.trim().length < 3)
+      return left(new InvalidFullNameException());
+    this._attibutes.fullName = newFullName.trim();
+    return right(this);
+  }
+
+  public changeEmail(
+    newEmail: string,
+  ): Either<InvalidEmailException, UserClient> {
+    const newEmailOrError = Email.create(newEmail);
+    if (newEmailOrError.isLeft()) return left(new InvalidEmailException());
+    this._attibutes.email = newEmailOrError.value;
+    return right(this);
+  }
+
+  public changeCpf(newCpf: string): Either<InvalidCpfException, UserClient> {
+    const newCpfOrError = CPF.create(newCpf);
+    if (newCpfOrError.isLeft()) return left(new InvalidCpfException());
+    this._attibutes.cpf = newCpfOrError.value;
+    return right(this);
+  }
+
+  public changePassword(
+    newPassword: string,
+  ): Either<InvalidPasswordException, UserClient> {
+    if (!newPassword || newPassword.trim().length < 4)
+      return left(new InvalidPasswordException());
+    this._attibutes.password = newPassword.trim();
+    return right(this);
   }
 }
