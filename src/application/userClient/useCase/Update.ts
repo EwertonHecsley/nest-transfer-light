@@ -1,10 +1,10 @@
 import { BadRequestException, NotFoundException } from '@nestjs/common';
-import { UserClientGateway } from 'core/domain/ports/UserClientGateway';
-import { InvalidCpfException } from 'shared/exceptions/InvalidCpfException';
-import { InvalidEmailException } from 'shared/exceptions/InvalidEmailException';
-import { InvalidFullNameException } from 'shared/exceptions/InvalidFullNameException';
-import { Either, left, right } from 'shared/utils/either';
-import { UserClient } from 'core/domain/userClient/entity/UserClient';
+import { UserClientGateway } from '../../../core/domain/ports/UserClientGateway';
+import { InvalidCpfException } from '../../../shared/exceptions/InvalidCpfException';
+import { InvalidEmailException } from '../../../shared/exceptions/InvalidEmailException';
+import { InvalidFullNameException } from '../../../shared/exceptions/InvalidFullNameException';
+import { Either, left, right } from '../../../shared/utils/either';
+import { UserClient } from '../../../core/domain/userClient/entity/UserClient';
 
 type RequestUpdateUserClient = {
   id: string;
