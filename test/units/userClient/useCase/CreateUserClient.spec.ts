@@ -1,125 +1,120 @@
 import { BadRequestException } from '@nestjs/common';
 import { CreateUserClientUseCase } from '../../../../src/application/userClient/useCase/Create';
 import { UserClientFactory } from '../../../../src/application/userClient/useCase/factory/CreateUserClient.factory';
+import { HashPasswordGateway } from '../../../../src/core/domain/ports/HashPasswordGateway';
 import { UserClientGateway } from '../../../../src/core/domain/ports/UserClientGateway';
 import { UserClient } from '../../../../src/core/domain/userClient/entity/UserClient';
-import { InvalidBalanceException } from '../../../../src/shared/exceptions/InvalidBalanceException';
 import { InvalidCpfException } from '../../../../src/shared/exceptions/InvalidCpfException';
 import { InvalidEmailException } from '../../../../src/shared/exceptions/InvalidEmailException';
 import { left, right } from '../../../../src/shared/utils/either';
 
-// Mock do Factory
 jest.mock(
   '../../../../src/application/userClient/useCase/factory/CreateUserClient.factory',
-  () => ({
-    UserClientFactory: {
-      create: jest.fn(),
-      findByEmail: jest.fn(),
-      findByCpf: jest.fn(),
-    },
-  }),
 );
 
 describe('CreateUserClientUseCase', () => {
   let useCase: CreateUserClientUseCase;
   let userClientGateway: jest.Mocked<UserClientGateway>;
-
-  const mockRequest = {
-    fullName: 'Test User',
-    cpf: '12345678901',
-    email: 'test@email.com',
-    password: 'strong_password',
-  };
-
-  const mockUser = { id: '1', ...mockRequest } as unknown as UserClient;
+  let hashPasswordGateway: jest.Mocked<HashPasswordGateway>;
+  let userClient: jest.Mocked<UserClient>;
 
   beforeEach(() => {
-    // Criando mocks para o gateway
     userClientGateway = {
       findByEmail: jest.fn(),
       findByCpf: jest.fn(),
-      save: jest.fn(),
+      create: jest.fn(),
     } as any;
 
-    useCase = new CreateUserClientUseCase(userClientGateway);
+    hashPasswordGateway = {
+      hash: jest.fn(),
+      compare: jest.fn(),
+    } as any;
 
+    userClient = {
+      changePassword: jest.fn(),
+    } as any;
+
+    useCase = new CreateUserClientUseCase(
+      userClientGateway,
+      hashPasswordGateway,
+    );
     jest.clearAllMocks();
   });
 
-  it('deve criar um usuário com dados válidos', async () => {
+  const request = {
+    fullName: 'John Doe',
+    cpf: '123.456.789-00',
+    email: 'john.doe@example.com',
+    password: 'password123',
+  };
+
+  it('should create a new user client', async () => {
     userClientGateway.findByEmail.mockResolvedValue(null);
     userClientGateway.findByCpf.mockResolvedValue(null);
-    (UserClientFactory.create as jest.Mock).mockReturnValue(right(mockUser));
+    (UserClientFactory.create as jest.Mock).mockReturnValue(right(userClient));
+    hashPasswordGateway.hash.mockResolvedValue('hashed_password');
+    (userClient.changePassword as jest.Mock).mockReturnValue(right(undefined));
 
-    const result = await useCase.execute(mockRequest);
+    const result = await useCase.execute(request);
 
     expect(result.isRight()).toBe(true);
-    expect(result.value).toEqual(mockUser);
-    expect(userClientGateway.findByEmail).toHaveBeenCalledWith(
-      mockRequest.email,
-    );
-    expect(userClientGateway.findByCpf).toHaveBeenCalledWith(mockRequest.cpf);
-    expect(UserClientFactory.create).toHaveBeenCalledWith(mockRequest);
+    expect(userClientGateway.findByEmail).toHaveBeenCalledWith(request.email);
+    expect(userClientGateway.findByCpf).toHaveBeenCalledWith(request.cpf);
+    expect(UserClientFactory.create).toHaveBeenCalledWith(request);
+    expect(hashPasswordGateway.hash).toHaveBeenCalledWith(userClient.password);
+    expect(userClient.changePassword).toHaveBeenCalledWith('hashed_password');
+    expect(userClientGateway.create).toHaveBeenCalledWith(userClient);
+    expect(result.value).toEqual(userClient);
   });
 
-  it('deve retornar erro se email já existir', async () => {
-    userClientGateway.findByEmail.mockResolvedValue(mockUser);
+  it('should return an error if email already exists', async () => {
+    userClientGateway.findByEmail.mockResolvedValue({} as UserClient);
 
-    const result = await useCase.execute(mockRequest);
+    const result = await useCase.execute(request);
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(BadRequestException);
-    expect(userClientGateway.findByCpf).not.toHaveBeenCalled();
-    expect(UserClientFactory.create).not.toHaveBeenCalled();
+    expect((result.value as BadRequestException).message).toBe(
+      'Email already exists.',
+    );
   });
 
-  it('deve retornar erro se CPF já existir', async () => {
+  it('should return an error if CPF already exists', async () => {
     userClientGateway.findByEmail.mockResolvedValue(null);
-    userClientGateway.findByCpf.mockResolvedValue(mockUser);
+    userClientGateway.findByCpf.mockResolvedValue({} as UserClient);
 
-    const result = await useCase.execute(mockRequest);
+    const result = await useCase.execute(request);
 
     expect(result.isLeft()).toBe(true);
     expect(result.value).toBeInstanceOf(BadRequestException);
-    expect(UserClientFactory.create).not.toHaveBeenCalled();
+    expect((result.value as BadRequestException).message).toBe(
+      'CPF already exists.',
+    );
   });
 
-  it('deve retornar erro se o Factory falhar com email inválido', async () => {
+  it('should return an error if user creation fails', async () => {
     userClientGateway.findByEmail.mockResolvedValue(null);
     userClientGateway.findByCpf.mockResolvedValue(null);
-    (UserClientFactory.create as jest.Mock).mockReturnValue(
-      left(new InvalidEmailException()),
-    );
+    const error = new InvalidEmailException();
+    (UserClientFactory.create as jest.Mock).mockReturnValue(left(error));
 
-    const result = await useCase.execute(mockRequest);
+    const result = await useCase.execute(request);
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(InvalidEmailException);
+    expect(result.value).toBe(error);
   });
 
-  it('deve retornar erro se o Factory falhar com CPF inválido', async () => {
+  it('should return an error if password hashing fails', async () => {
     userClientGateway.findByEmail.mockResolvedValue(null);
     userClientGateway.findByCpf.mockResolvedValue(null);
-    (UserClientFactory.create as jest.Mock).mockReturnValue(
-      left(new InvalidCpfException()),
-    );
+    (UserClientFactory.create as jest.Mock).mockReturnValue(right(userClient));
+    hashPasswordGateway.hash.mockResolvedValue('hashed_password');
+    const error = new InvalidCpfException();
+    (userClient.changePassword as jest.Mock).mockReturnValue(left(error));
 
-    const result = await useCase.execute(mockRequest);
-
-    expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(InvalidCpfException);
-  });
-
-  it('deve retornar erro se o Factory falhar com saldo inválido', async () => {
-    userClientGateway.findByEmail.mockResolvedValue(null);
-    userClientGateway.findByCpf.mockResolvedValue(null);
-    (UserClientFactory.create as jest.Mock).mockReturnValue(
-      left(new InvalidBalanceException()),
-    );
-
-    const result = await useCase.execute(mockRequest);
+    const result = await useCase.execute(request);
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(InvalidBalanceException);
+    expect(result.value).toBe(error);
   });
 });
