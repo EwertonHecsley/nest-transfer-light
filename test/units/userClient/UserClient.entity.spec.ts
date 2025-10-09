@@ -3,6 +3,8 @@ import { Balance } from '../../../src/core/domain/userClient/objectValues/Balanc
 import { CPF } from '../../../src/core/domain/userClient/objectValues/CPF';
 import { Email } from '../../../src/core/domain/userClient/objectValues/Email';
 import { InvalidBalanceException } from '../../../src/shared/exceptions/InvalidBalanceException';
+import { InvalidFullNameException } from '../../../src/shared/exceptions/InvalidFullNameException';
+import { InvalidPasswordException } from '../../../src/shared/exceptions/InvalidPasswordException';
 
 describe('UserClient Entity', () => {
   let user: UserClient;
@@ -125,5 +127,31 @@ describe('UserClient Entity', () => {
     expect(user.email.toValue).toBe('test@email.com');
     expect(user.cpf.toValue).toBe('12345678901');
     expect(user.balance.valueAsReal).toBe(100);
+  });
+
+  it('should return error if fullName is invalid', () => {
+    const result = user.changeFullName('J');
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(InvalidFullNameException);
+  });
+
+  it('should change fullName successfully', () => {
+    const newName = 'John Doe Changed';
+    const result = user.changeFullName(newName);
+    expect(result.isRight()).toBe(true);
+    expect((result.value as UserClient).fullName).toBe(newName);
+  });
+
+  it('should return error if password is invalid', () => {
+    const result = user.changePassword('123');
+    expect(result.isLeft()).toBe(true);
+    expect(result.value).toBeInstanceOf(InvalidPasswordException);
+  });
+
+  it('should change password successfully', () => {
+    const newPassword = 'newSecurePassword';
+    const result = user.changePassword(newPassword);
+    expect(result.isRight()).toBe(true);
+    expect((result.value as UserClient).password).toBe(newPassword);
   });
 });
