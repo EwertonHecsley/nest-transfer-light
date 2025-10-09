@@ -6,6 +6,7 @@ import { InvalidCpfException } from '../../../../src/shared/exceptions/InvalidCp
 import { InvalidEmailException } from '../../../../src/shared/exceptions/InvalidEmailException';
 import { Either, left, right } from '../../../../src/shared/utils/either';
 import { UserClientFactory } from './factory/CreateUserClient.factory';
+import { HashPasswordGateway } from 'core/domain/ports/HashPasswordGateway';
 
 type UserClientRequest = {
   fullName: string;
@@ -15,7 +16,10 @@ type UserClientRequest = {
 };
 
 export class CreateUserClientUseCase {
-  constructor(private readonly userClientGateway: UserClientGateway) {}
+  constructor(
+    private readonly userClientGateway: UserClientGateway,
+    private readonly hashPasswordGateway: HashPasswordGateway,
+  ) {}
 
   async execute(
     data: UserClientRequest,
@@ -41,6 +45,13 @@ export class CreateUserClientUseCase {
     if (createUserOrError.isLeft()) return left(createUserOrError.value);
 
     const user = createUserOrError.value;
+    const passwordHash = await this.hashPasswordGateway.hash(user.password);
+
+    const transformPasswordOrError = user.changePassword(passwordHash);
+    if (transformPasswordOrError.isLeft())
+      return left(transformPasswordOrError.value);
+
+    await this.userClientGateway.create(user);
 
     return right(user);
   }
