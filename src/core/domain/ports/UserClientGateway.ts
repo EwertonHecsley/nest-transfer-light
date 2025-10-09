@@ -20,4 +20,5 @@ export abstract class UserClientGateway {
     params: FindAllParams,
   ): Promise<PaginatedResponse<UserClient>>;
   abstract save(entity: UserClient): Promise<void>;
+  abstract delete(id: string): Promise<void>;
 }
