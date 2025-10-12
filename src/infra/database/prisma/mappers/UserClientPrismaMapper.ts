@@ -1,10 +1,10 @@
 import { BadRequestException } from '@nestjs/common';
 import { UserClient as UserClientDatabase } from '@prisma/client';
-import Identity from 'core/domain/generics/Identity';
-import { UserClient } from 'core/domain/userClient/entity/UserClient';
-import { Balance } from 'core/domain/userClient/objectValues/Balance';
-import { CPF } from 'core/domain/userClient/objectValues/CPF';
-import { Email } from 'core/domain/userClient/objectValues/Email';
+import Identity from '../../../../core/domain/generics/Identity';
+import { UserClient } from '../../../../core/domain/userClient/entity/UserClient';
+import { Balance } from '../../../../core/domain/userClient/objectValues/Balance';
+import { CPF } from '../../../../core/domain/userClient/objectValues/CPF';
+import { Email } from '../../../../core/domain/userClient/objectValues/Email';
 
 export class UserClientPrismaMapper {
   static toDomain(raw: UserClientDatabase): UserClient {
