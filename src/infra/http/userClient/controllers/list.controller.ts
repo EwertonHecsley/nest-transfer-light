@@ -1,5 +1,5 @@
 import { Controller, Get, HttpCode, Res } from '@nestjs/common';
-import { ListAllUserClientUseCase } from 'application/userClient/useCase/List';
+import { ListAllUserClientUseCase } from '../../../../application/userClient/useCase/List';
 import type { Response } from 'express';
 
 @Controller('userClient')
