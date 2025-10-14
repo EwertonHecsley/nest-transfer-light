@@ -4,7 +4,7 @@ import { UserClient } from '../../../../src/core/domain/userClient/entity/UserCl
 import { InvalidBalanceException } from '../../../../src/shared/exceptions/InvalidBalanceException';
 import { InvalidCpfException } from '../../../../src/shared/exceptions/InvalidCpfException';
 import { InvalidEmailException } from '../../../../src/shared/exceptions/InvalidEmailException';
-import { Either, left, right } from '../../../../src/shared/utils/either';
+import { Either, left, right } from '../../../shared/utils/either';
 import { UserClientFactory } from './factory/CreateUserClient.factory';
 import { HashPasswordGateway } from 'core/domain/ports/HashPasswordGateway';
 
